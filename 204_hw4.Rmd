@@ -47,6 +47,9 @@ damage function, overlaid with a scatterplot of the underlying data.
 
 
 ```{r}
+
+# Q1 SET UP
+
 # USE DAMAGE DATA TO ESTIMATE QUARATIC FUNCTION # ESTIMATE MODEL W/ ZERO INTERCEPT
 
 damage_warming <- damage$warming^2
@@ -88,6 +91,61 @@ CO2 (you can assume that each ton of the pulse causes the same amount of damage)
 
 ```{r}
 
+# Q2 GRAPH SET UP
+
+# plot 1 set up
+
+warming$warming_wo_pulse <- damage_function_Q1(warming$warming_baseline)
+
+# plot 2 set up
+
+warming$warming_with_pulse <- damage_function_Q1(warming$warming_pulse)
+
+# plot 3 set up
+
+warming$difference <- warming$warming_with_pulse - warming$warming_wo_pulse
+
+# plot 4 set up 
+
+warming$difference_per_ton <- warming$difference/35000000000
+
+# PLOT 1: DAMAGES OVER TIME WITHOUT PULSE
+
+ggplot(data = warming)+
+  geom_point(aes(x = year, y = warming_wo_pulse)) +
+  labs(x = "Year", 
+       y = "Damages (w/o pulse)", 
+       title = "Damage without Pulse")+ 
+  theme_grey()
+
+
+# PLOT 2: DAMAGES OVER TIME WITH PULSE
+
+ggplot(data = warming) +
+  geom_point(aes(x = year, y = warming_with_pulse)) +
+  labs(x = "Year", 
+       y = "Damages (with pulse)", 
+       title = "Damage with Pulse")+ 
+  theme_grey()
+
+# PLOT 3: DIFF IN DAMAGES OVER TIME THAT ARISE FROM PULSE
+
+ggplot(data = warming) +
+  geom_point(aes(x = year, y = difference)) +
+  labs(x = "Year", 
+       y = "Difference in Damages (with and w/o pulse)", 
+       title = "Difference in Damages")+ 
+  theme_grey()
+
+# PLOT 4: DIFF IN DAMAGES OVER TIME FROM PULSE PER TON OF CO2
+
+ggplot(data = warming) +
+  geom_point(aes(x = year, y = difference_per_ton)) +
+  labs(x = "Year", 
+       y = "Difference in Damages (per ton co2)", 
+       title = "Difference in Damages (per ton of co2)")+ 
+  theme_grey()
+
 
 
 ```
@@ -100,6 +158,11 @@ additional ton of CO2. The Obama Administration used a discount rate of 3% to di
 damages. Recently, New York State used a discount rate of 2%. Calculate and make a plot
 of the SCC (y-axis) against the discount rate (x-axis) for a reasonable range of discount rates.
 Explain the intuition for how the discount rate affects the SCC.
+
+
+```{r}
+
+```
 
 ## Question 4
 
