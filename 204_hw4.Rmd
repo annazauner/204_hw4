@@ -1,30 +1,134 @@
 ---
-title: "ESM 204 Homework 4"
-output: html_document
-date: '2022-05-23'
+title: "ESM 204 Homework 4: Calculating SCC and policy choice under uncertianty"
+date: 'May 27th, 2022'
 author: "Anna Zauner"
+output: 
+  html_document: 
+    highlight: textmate
+    theme: journal
+    code_folding: hide
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+## Introduction: 
+
+In this report, estimates of the future impacts of climate change are used to inform an
+update to the SCC.
+
+The data in this analysis comes from two datasets, “damages.csv” and “warming.csv”. Data on damages includes total damages from climate change with different levels of warming, in degrees C. Warming data includes estimates of a baseline of future climate trajectory, in degrees C, until 2100. A second trajectory is included which adds a one-time pulse of CO2 into the atmosphere today. This pulse is equal to annual global emissions.     
+
+
+
+```{r setup, include=FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(here)
+library(tidyverse)
+library(janitor)
+library(equatiomatic)
+library(broom)
 ```
 
-## R Markdown
+```{r}
+# READ IN THE DATA
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+damage <-read_csv(here("data", "damages.csv"))
+  
+warming <-read_csv(here("data", "warming.csv"))
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+# data is clean
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+## Question 1
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+Estimate a quadratic damage function relating the dollar value of damages
+to the change in global mean temperature. Estimate a model with a zero intercept because
+damages by construction must equal zero when there is no climate change. Plot your estimated
+damage function, overlaid with a scatterplot of the underlying data.
+
+
+```{r}
+# USE DAMAGE DATA TO ESTIMATE QUARATIC FUNCTION # ESTIMATE MODEL W/ ZERO INTERCEPT
+
+damage_warming <- damage$warming^2
+
+damage_quad <- lm(damages ~ 0 + warming + damage_warming, data = damage) # ZERO INT
+
+damage_quad
+
+# damage = 1.941x10^13T^2 - 1.06x10^12T
+
+damage_function_Q1 <-function(x){damage_quad$coefficients[2]*x^2-damage_quad$coefficients[1]*x}
+
+
+# PLOT DAMAGE FUNCTION
+
+ggplot(data = damage, aes(x = warming, y = damages))+
+  stat_function(fun = damage_function_Q1, color = "blue", size = 1)+
+  geom_point(size = 1, color = "grey")+
+  labs(x = "Temperature (C)",
+       y = "Total Damages ($)",
+       title = "Climate Change Damages due to Warming",
+       caption = "Formula: Demand = 1.94x10^13T^2 - 1.06x10^12T")+
+  theme_classic()+
+  theme(plot.title = element_text(hjust = 0.6, size = 10))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Question 2
+
+Use warming.csv and your estimated damage function to predict damages in each year under
+the baseline climate and the pulse scenario. Make four plots: 
+(1) damages over time without
+the pulse, 
+(2) damages over time with the pulse, 
+(3) the difference in damages over time that
+arises from the pulse, and 
+(4) the difference in damages over time from the pulse per ton of
+CO2 (you can assume that each ton of the pulse causes the same amount of damage).
+
+```{r}
+
+
+
+```
+
+
+## Question 3
+
+The SCC is the present discounted value of the stream of future damages caused by one
+additional ton of CO2. The Obama Administration used a discount rate of 3% to discount
+damages. Recently, New York State used a discount rate of 2%. Calculate and make a plot
+of the SCC (y-axis) against the discount rate (x-axis) for a reasonable range of discount rates.
+Explain the intuition for how the discount rate affects the SCC.
+
+## Question 4
+
+The National Academies of Sciences, Engineering, and Medicine advised the government in a
+2017 report to use the Ramsey Rule when discounting within the SCC calculation:
+r = ρ + ηg
+Using ρ = 0.001, η = 2, and g = 0.01, what is the SCC? Locate this point on your graph from
+above
+
+## Question 5
+
+Now suppose there are two possible climate policies that can be pursued. Policy A is business
+as usual and Policy B is to take immediate and strong action on climate change. Use these
+facts
+• If you undertake Policy A there are two possible outcomes. Either warming will occur as
+in the “baseline” (i.e. “no-pulse”) dataset above (this happens with probability 0.5) or
+warming each year will be 1.5 times that in the “baseline” dataset (with probability 0.5).
+• Under Policy B, warming will continue until 2050 as in the “baseline” dataset, and then
+will stabilize at 1.29 degrees and stay that way forever.
+• Society is risk neutral
+• Use a discount rate of 2%
+What is the expected present value of damages up to 2100 under Policy A? What is the
+expected present value of damages up to 2100 under Policy B? Suppose undertaking Policy A
+costs zero and undertaking Policy B costs X. The total cost of a policy is the implementation
+cost plus expected damages. Make a plot of total cost of Policy A and total cost of Policy B
+against X. Suppose Congress wants to undertake the policy with the lower total cost. Use
+your graph to advise Congress.
+
+## Question 6
+
+Now suppose that society is risk averse. How do you think this would change your advice to
+Congress?
