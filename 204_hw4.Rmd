@@ -313,7 +313,8 @@ your graph to advise Congress.
 
 ```
 
-Policy B is recommended if implementation cost is less than x billion dollars. If the cost exceeds x billion dollars, policy A is recommended.
+
+Policy B is recommended if implementation cost is less than x billion dollars. If the cost exceeds x billion dollars, Policy A is recommended. This recommendation is based on minimizing costs and given that the total cost of Policy A is the present value of damages through 2100 and total cost of Policy B is the sum of the implementation cost and the present value of those damages through 2100.
 
 ## Question 6
 
@@ -322,5 +323,5 @@ Congress?
 
 **Policy B is more attractive in a society that is risk averse.**
 
-The utility function for the risk averse society would need to be provided for exact calculations. The general logic for favoring policy B is rooted in the concave utility function of a risk averse society. Due to the uncertainty of costs for policy A versus the known costs of policy B given a society averse to risk, policy B would be recommended.  
+The utility function for the risk averse society would need to be provided for exact calculations. The general logic for favoring Policy B is rooted in the concave utility function of a risk averse society. Due to the uncertainty of costs for Policy A versus the known costs of policy B given a society averse to risk, Policy B would be recommended.  
 
