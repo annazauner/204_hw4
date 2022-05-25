@@ -250,7 +250,7 @@ above
 ```{r}
 # find disc rate using ramsey rule with the values above
 ramsey_disc_rate <- (0.001 + 2*0.01)*100 
-      # discount rate with ramsey rule is 2.1%
+      # discount rate with Ramsey rule is 2.1%
 ramsey_disc_rate
 # make a new dataset with present values using rr discount rate of 2.1% (do the same calculations as question 3 but using discount rate of 2.1%)
 damages_rr <- warming %>%
@@ -305,13 +305,10 @@ against X. Suppose Congress wants to undertake the policy with the lower total c
 your graph to advise Congress.
 
 
-
 ```{r}
 
-
-
-
 ```
+
 
 
 Policy B is recommended if implementation cost is less than x billion dollars. If the cost exceeds x billion dollars, Policy A is recommended. This recommendation is based on minimizing costs and given that the total cost of Policy A is the present value of damages through 2100 and total cost of Policy B is the sum of the implementation cost and the present value of those damages through 2100.
